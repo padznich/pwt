@@ -221,7 +221,19 @@ for line in lines_list:
 #
 # task 15
 #
+'''
+import sys
 
+ipath = sys.argv[1]
+opath = sys.argv[2]
+
+poo = True
+with open(ipath, 'r') as ifile:
+    while poo:
+        poo = ifile.read(1024)
+        with open(opath, 'a+') as ofile:
+            ofile.write(poo)
+'''
 
 
 
