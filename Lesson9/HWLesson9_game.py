@@ -20,38 +20,13 @@
 7. некоторые счетчики игрока используются для выдачи игровых достижений
 '''
 
-#   ach achievements
-#   m1  money1
-#   m2  money2
-#   gs  game session
-class Counter(object): pass
-
-class Player(Counter):
-
-    def __init__(self, plr_name, login, email, password):
-        self.name = plr_name
-        self.login = login
-        self.email = email
-        self.password = password
-
-        self.ach1 = 0       # Health
-        self.ach2 = 0       # Distance
-        self.ach3 = 0       #
-        self.ach4 = 0       # health
-
-        self.money1 = 0     # usd
-        self.money2 = 0     # rub
-
-        self.session = 0
-
-class Money_op:
-    def pop_money(self, cur, val):
+class MoneyOp(object):
+    def give_money(self, cur, val):
         if cur == 'USD':
             self.money1 -= val
         if cur == 'RUB':
             self.money2 -= val
-
-    def add_money(self, cur, val):
+    def take_money(self, cur, val):
         if cur == 'USD':
             self.money1 += val
         if cur == 'RUB':
@@ -60,7 +35,32 @@ class Money_op:
 
 
 
+class Player(MoneyOp):
+
+    def __init__(self, plr_name, login, email, password):
+        self.name = plr_name
+        self.login = login
+        self.email = email
+        self.password = password
+
+        self.health = 100
+        self.experience = 0
+        self.attack = 1
+        self.speed = 1
+
+        self.money1 = 0     # USD
+        self.money2 = 0     # RUB
+
+        self.session = 0
+
+
+
+
+
 
 p = Player('name', 'log', 'email', 'pass')
+print(p.money1)
+p.take_money('USD', 100)
+print(p.money1)
 
 
