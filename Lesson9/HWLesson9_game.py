@@ -21,18 +21,22 @@
 '''
 
 class MoneyOp(object):
+
+    def show_money(self):
+        print('{} dollars.'.format(self.money1))
+        print('{} rubles'.format(self.money2))
+
     def give_money(self, cur, val):
         if cur == 'USD':
             self.money1 -= val
         if cur == 'RUB':
             self.money2 -= val
+
     def take_money(self, cur, val):
         if cur == 'USD':
             self.money1 += val
         if cur == 'RUB':
             self.money2 += val
-
-
 
 
 class Player(MoneyOp):
@@ -51,16 +55,14 @@ class Player(MoneyOp):
         self.money1 = 0     # USD
         self.money2 = 0     # RUB
 
-        self.session = 0
+        self.total_session = 0
 
 
+if __name__ == '__main__':
+    p = Player('name', 'log', 'email', 'pass')
+    p.show_money()
+    p.take_money('USD', 100)
+    p.show_money()
 
-
-
-
-p = Player('name', 'log', 'email', 'pass')
-print(p.money1)
-p.take_money('USD', 100)
-print(p.money1)
-
-
+    for key in p.__dict__.keys():
+        print(key, p.__dict__[key])
