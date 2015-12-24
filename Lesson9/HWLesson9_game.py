@@ -1,5 +1,6 @@
 # coding=utf-8
 
+import datetime
 '''
 Домашнее задание
 Объекты реального мира:
@@ -22,6 +23,10 @@
 
 class MoneyOp(object):
 
+    def __init__(self, cur, value):
+        self.cur = cur
+        self.value = value
+
     def show_money(self):
         print('{} dollars.'.format(self.money1))
         print('{} rubles'.format(self.money2))
@@ -39,7 +44,15 @@ class MoneyOp(object):
             self.money2 += val
 
 
-class Player(MoneyOp):
+class SessionOp(object):
+    def new_session(self):
+        def __enter__(self):
+                start = datetime.datetime.now()
+        def __exit__(self, exc_type, exc_val, exc_tb):
+            finish = datetime.datetime.now()
+        total = (finish - start)
+
+class Player(MoneyOp, SessionOp):
 
     def __init__(self, plr_name, login, email, password):
         self.name = plr_name
@@ -55,7 +68,14 @@ class Player(MoneyOp):
         self.money1 = 0     # USD
         self.money2 = 0     # RUB
 
-        self.total_session = 0
+        self.session = {} # num start finish total
+        self.last_session = 0
+        def new_session(self):
+
+            self.last_session += 1
+
+            self.session[self.last_session]
+
 
 
 if __name__ == '__main__':

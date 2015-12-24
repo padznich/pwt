@@ -24,7 +24,7 @@ class A(object):
 class B(A):
 
     def add(self, val):
-        self.__class__.__self__.b = self.b + val
+        self.__class__.b = self.b + val
 
 a = B()
 print(a.b)
