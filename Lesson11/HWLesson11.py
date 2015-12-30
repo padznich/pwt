@@ -42,33 +42,51 @@ pickle или  json.
 '''
 
 import datetime
+from time import sleep
 import json
 
 class Money(object):
 
-    def show_money(self):
-        print('Your money:')
+    def __init__(self, name):
+        self.wallet = {} # {currency : amount}
+        self.name = name
+
+    def show(self):
+        print("{}'s money:".format(self.name))
         for k, v in self.wallet.items():
             print('{} : {}'.format(k, self.wallet[k]))
 
-    def give_money(self, cur, val):
+    def give(self, cur, val):
         self.wallet.setdefault(cur, 0)
         self.wallet[cur] -= val
 
-    def take_money(self, cur, val):
+    def take(self, cur, val):
         self.wallet.setdefault(cur, 0)
         self.wallet[cur] += val
 
 class Session(object):
 
+    def __init__(self):
+        self.session_info = [] # [[start, finish, total], [],]
+
     def __enter__(self):
         self.start = datetime.datetime.now()
-        self.last_session += 1
 
     def __exit__(self):
         self.finish = datetime.datetime.now()
-        total = (self.finish - self.start)
-        self.session[self.last_session] = (self.start, self.finish, total)
+        self.total = (self.finish - self.start)
+        self.session_info.append("Session started at: {}  ||  "
+                                 "Session finished at: {}  ||  "
+                                 "Session duration is: {}"
+                                 .format(str(self.start), str(self.finish), str(self.total)))
+
+class Counters(object):
+
+    def __init__(self):
+        self.money_deals = 0
+        self.talks = 0
+
+
 
 class Player(object):
 
@@ -78,19 +96,19 @@ class Player(object):
         self.email = email
         self.password = password
 
-        self.wallet = {} # {currency : amount}
-        self.money = Money()
-
-        self.session = {} # {number_of_session : start finish total}
+        self.money = Money(self.name)
         self.session = Session()
-        self.last_session = 0
+        self.counters = Counters()
 
 
     def say(self):
         print("I'm a simple Player.")
 
     def run(self):
-        print("My speed is 7 kilometers per hour")
+        print("I run. My speed is 7 kilometers per hour")
+
+    def stop(self):
+        print("I've stopped!")
 
 
     def as_dict(self):
@@ -141,6 +159,24 @@ if __name__ == '__main__':
     p2 = Moderator('John')
     p3 = Admin('Suzi')
 
+    p1.session.__enter__()
+    p1.money.take('RUB', 500)
+    p1.money.show()
+    p1.money.give('RUB', 200)
+    p1.money.take('USD', 900)
+    p1.money.show()
+    sleep(0.4)
+    p1.session.__exit__()
+    print(p1.session.session_info)
+    print(p1.__dict__.keys())
+
+    p3.session.__enter__()
+    p3.money.give("BLR", 100500)
+    p3.money.show()
+
+
+'''
+
     p1.save(open("Bob.txt", "w"))
     print("p1 is {}".format(p1))
 
@@ -162,3 +198,4 @@ if __name__ == '__main__':
     deserialized_p3 = p3
     deserialized_p3.load(open("Adm.txt"))
     print("deserialized player is {}".format(deserialized_p3))
+'''
