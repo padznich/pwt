@@ -104,6 +104,7 @@ class Counters(object):
     def show_score(self):
         print("{}".format(self.counter))
 
+
 class Player(object):
 
     def __init__(self, plr_name, login, email, password):
