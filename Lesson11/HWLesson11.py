@@ -164,7 +164,7 @@ class Admin(Moderator):
         Player.__init__(self, plr_name, login, email, password)
 
     def say(self):
-        print("I'm a administrator.")
+        print("I'm an administrator.")
 
     def run(self):
         print("My speed is 50 kilometers per hour")
@@ -204,9 +204,13 @@ if __name__ == '__main__':
     print(p2.__dict__.keys())
     print(p3.__dict__.keys())
 
+    p1.say()
+    p2.say()
+    p3.say()
+
+
 
 '''
-
     p1.save(open("Bob.txt", "w"))
     print("p1 is {}".format(p1))
 
