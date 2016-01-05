@@ -50,24 +50,30 @@ class Money(object):
     def __init__(self, name):
         self.wallet = {} # {currency : amount}
         self.name = name
+        self.money_deals = 0
 
-    def show(self):
-        print("{}'s money:".format(self.name))
+    def show_wallet(self):
+        print("{}'s wallet:".format(self.name))
         for k, v in self.wallet.items():
-            print('{} : {}'.format(k, self.wallet[k]))
+            print('--{} : {}'.format(k, self.wallet[k]))
 
     def give(self, cur, val):
+        print("{} balance decreased by {} {}.".format(self.name, val, cur))
         self.wallet.setdefault(cur, 0)
         self.wallet[cur] -= val
+        self.money_deals += 1
 
     def take(self, cur, val):
+        print("{} balance increased by {} {}.".format(self.name, val, cur))
         self.wallet.setdefault(cur, 0)
         self.wallet[cur] += val
+        self.money_deals += 1
 
 class Session(object):
 
-    def __init__(self):
+    def __init__(self, name):
         self.session_info = [] # [[start, finish, total], [],]
+        self.name = name
 
     def __enter__(self):
         self.start = datetime.datetime.now()
@@ -80,13 +86,23 @@ class Session(object):
                                  "Session duration is: {}"
                                  .format(str(self.start), str(self.finish), str(self.total)))
 
+    def show_info(self):
+        for w in self.session_info:
+            print("{} {}".format(self.name, w))
+
 class Counters(object):
 
     def __init__(self):
-        self.money_deals = 0
-        self.talks = 0
+        self.counter = 0
 
+    def add(self, value):
+        self.counter += value
 
+    def rob(self, value):
+        self.counter -= value
+
+    def show_score(self):
+        print("{}".format(self.counter))
 
 class Player(object):
 
@@ -97,8 +113,10 @@ class Player(object):
         self.password = password
 
         self.money = Money(self.name)
-        self.session = Session()
-        self.counters = Counters()
+        self.session = Session(self.name)
+        self.counter1 = Counters()
+        self.counter2 = Counters()
+        self.counter3 = Counters()
 
 
     def say(self):
@@ -127,7 +145,7 @@ class Player(object):
         return object_as_dict
 
     def __str__(self):
-        return '{}(name="{}")'.format(self.__class__.__name__, self.name)
+        return "{}(name='{}')".format(self.__class__.__name__, self.name)
 
 class Moderator(Player):
 
@@ -161,18 +179,30 @@ if __name__ == '__main__':
 
     p1.session.__enter__()
     p1.money.take('RUB', 500)
-    p1.money.show()
+    p1.money.show_wallet()
     p1.money.give('RUB', 200)
     p1.money.take('USD', 900)
-    p1.money.show()
+    p1.money.show_wallet()
     sleep(0.4)
     p1.session.__exit__()
-    print(p1.session.session_info)
-    print(p1.__dict__.keys())
+
+    sleep(0.2)
+    p1.session.__enter__()
+    sleep(0.1)
+    p1.session.__exit__()
+
+    p1.session.show_info()
 
     p3.session.__enter__()
+    sleep(0.1)
+    p3.session.__exit__()
     p3.money.give("BLR", 100500)
-    p3.money.show()
+    p3.money.show_wallet()
+    p3.session.show_info()
+
+    print(p1.__dict__.keys())
+    print(p2.__dict__.keys())
+    print(p3.__dict__.keys())
 
 
 '''
