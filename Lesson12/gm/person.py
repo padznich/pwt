@@ -6,6 +6,7 @@ from gm import counters
 from gm import money
 from gm import session
 
+
 class Player(object):
 
     def __init__(self, plr_name, plr_login, email, password):
@@ -14,11 +15,11 @@ class Player(object):
         self.email = email
         self.password = password
 
-        self.money = Money(self.plr_name)
-        self.session = Session(self.plr_name)
-        self.counter1 = Counters()
-        self.counter2 = Counters()
-        self.counter3 = Counters()
+        self.money = money.Money(self.plr_name)
+        self.session = session.Session(self.plr_name)
+        self.counter1 = counters.Counters()
+        self.counter2 = counters.Counters()
+        self.counter3 = counters.Counters()
 
     def as_dict(self):
         d = {
@@ -31,7 +32,7 @@ class Player(object):
             "session": self.session,
             "counter1": self.counter1,
             "counter2": self.counter2,
-            "counter3": self.counter3
+            "counter3": self.counter3,
         }
         return d
 

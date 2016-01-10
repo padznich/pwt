@@ -131,7 +131,7 @@ class Player(object):
             "session": self.session,
             "counter1": self.counter1,
             "counter2": self.counter2,
-            "counter3": self.counter3
+            "counter3": self.counter3,
         }
         return d
 
