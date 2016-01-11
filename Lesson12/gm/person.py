@@ -3,9 +3,11 @@
 # import json
 import pickle
 
-from gm import counters
-from gm import money
-from gm import session
+
+import counters
+import money
+import session
+
 
 
 class Player(object):
@@ -137,3 +139,4 @@ class Admin(Moderator):
 
     def run(self):
         print("My speed is 50 kilometers per hour")
+
