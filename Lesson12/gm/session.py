@@ -10,6 +10,7 @@ class Session(object):
 
     def __enter__(self):
         self.start = datetime.datetime.now()
+        print("Session started.")
 
     def __exit__(self):
         self.finish = datetime.datetime.now()
@@ -18,6 +19,7 @@ class Session(object):
                                  "Session finished at: {}  ||  "
                                  "Session duration is: {}"
                                  .format(str(self.start), str(self.finish), str(self.total)))
+        print("Session finished")
 
     def show_info(self):
         for w in self.session_info:

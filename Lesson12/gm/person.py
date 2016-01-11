@@ -1,6 +1,7 @@
 # coding=utf-8
 
-import json
+# import json
+import pickle
 
 from gm import counters
 from gm import money
@@ -36,44 +37,69 @@ class Player(object):
         }
         return d
 
-    def save(self, file_object):
-        json.dump(self.as_dict(), file_object)
+    def save(self, f_name='saved_db'):
+        try:
+            with open(f_name, 'wb') as f:
+                pickle.dump(self.as_dict(), f)
+        except Exception as ex:
+            print(ex)
 
-    def load(self, file_object):
-        object_as_dict = json.load(file_object)
-        self.plr_name = object_as_dict["plr_name"]
-        self.plr_login = object_as_dict["plr_login"]
-        self.email = object_as_dict["email"]
-        self.password = object_as_dict["password"]
-        self.money = object_as_dict["money"]
-        self.session = object_as_dict["session"]
-        self.counter1 = object_as_dict["counter1"]
-        self.counter2 = object_as_dict["counter2"]
-        self.counter3 = object_as_dict["counter3"]
-        return object_as_dict
+        # try:
+        #     with open('{}_json'.format(f_name), 'wb') as f:
+        #         json.dump(self.as_dict(), f)
+        # except Exception as ex:
+        #     print(ex)
+
+    def load(self, f_name='saved_db'):
+        try:
+            with open(f_name, 'rb') as f:
+                data = pickle.load(f)
+            self.plr_name = data["plr_name"]
+            self.plr_login = data["plr_login"]
+            self.email = data["email"]
+            self.password = data["password"]
+            self.money = data["money"]
+            self.session = data["session"]
+            self.counter1 = data["counter1"]
+            self.counter2 = data["counter2"]
+            self.counter3 = data["counter3"]
+        except Exception as ex:
+            print(ex)
+        print('Loaded successful.')
+        # try:
+        #     object_as_dict = json.load(file_object)
+        #     self.plr_name = object_as_dict["plr_name"]
+        #     self.plr_login = object_as_dict["plr_login"]
+        #     self.email = object_as_dict["email"]
+        #     self.password = object_as_dict["password"]
+        #     self.money = object_as_dict["money"]
+        #     self.session = object_as_dict["session"]
+        #     self.counter1 = object_as_dict["counter1"]
+        #     self.counter2 = object_as_dict["counter2"]
+        #     self.counter3 = object_as_dict["counter3"]
+        # except Exception as ex:
+        #     print(ex)
 
 
     def login(self, t_login='', t_password=''):
 
-        t_login = input('Enter login \n')
-        if t_login != self.login:
-            print("Wrong login")
-            return self.login()
+        if t_login != self.plr_login:
+            if self.plr_login != raw_input('Enter login: '):
+                print("Wrong login")
+                return self.login()
 
-        t_password = input('Enter password \n')
-        if t_password != self.password:
+        if self.password != raw_input('Enter password: '):
             print("Wrong password")
-            return self.login(t_login)
+            return self.login(self.plr_login)
 
         print("Welcome {}".format(self.plr_name))
-        self.load(open('savefile.json', 'r'))
+        self.load()
         self.session.__enter__()
 
     def logout(self):
-
         print("Bye-bye {}".format(self.plr_name))
         self.session.__exit__()
-        self.save(open('savefile.json', 'w'))
+        self.save("{}'s logout_save".format(self.plr_login))
 
 
 

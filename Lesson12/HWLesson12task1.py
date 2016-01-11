@@ -36,18 +36,24 @@ if __name__ == '__main__':
     p1.counter1.rob(3)
     p1.counter1.show_score()
 
-    p2.counter1.add(19.7)
-    p2.counter1.show_score()
-    p2.counter1.rob(5.7)
-    p2.counter1.show_score()
+    p1.counter2.add(19.7)
+    p1.counter2.show_score()
+    p1.counter2.rob(5.7)
+    p1.counter2.show_score()
 
-    p3.counter1.add(900)
-    p3.counter1.show_score()
-    p3.counter1.rob(330)
-    p3.counter1.show_score()
+    p1.counter3.add(900)
+    p1.counter3.show_score()
+    p1.counter3.rob(330)
+    p1.counter3.show_score()
 
     p1.say()
     p2.say()
     p3.say()
 
-    p1.save(open("Bob", "w"))
+    p1.login()
+
+    p1.save()
+    p1.save('Bob_db')
+    p1.logout()
+    p1.load()
+    p1.load('Bob_db')
