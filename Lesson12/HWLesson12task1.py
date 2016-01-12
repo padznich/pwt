@@ -58,3 +58,6 @@ if __name__ == '__main__':
     p1.logout()
     p1.load()
     p1.load('Bob_db')
+
+    p1.save_json()
+    p1.load_json()

@@ -2,7 +2,8 @@
 
 class Counters(object):
 
-    def __init__(self):
+    def __init__(self, name):
+        self.name = name
         self.counter = 0
 
     def add(self, value):

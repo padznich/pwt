@@ -20,9 +20,9 @@ class Player(object):
 
         self.money = money.Money(self.plr_name)
         self.session = session.Session(self.plr_name)
-        self.counter1 = counters.Counters()
-        self.counter2 = counters.Counters()
-        self.counter3 = counters.Counters()
+        self.counter1 = counters.Counters('counter1')
+        self.counter2 = counters.Counters('counter2')
+        self.counter3 = counters.Counters('counter3')
 
     def as_dict(self):
         d = {
@@ -48,13 +48,16 @@ class Player(object):
                 pickle.dump(self.as_dict(), f)
         except Exception as ex:
             print(ex)
+        print("Saved in {}.".format(f_name))
 
+    def save_json(self, f_name='saved_db_json'):
         ####### json
         try:
-            with open('{}_json'.format(f_name), 'wb') as f:
+            with open(f_name, 'wb') as f:
                 json.dump(self.as_dict(), f)
         except Exception as ex:
             print(ex)
+        print("Saved as json in {}.".format(f_name))
 
     def load(self, f_name='saved_db'):
 
@@ -74,7 +77,9 @@ class Player(object):
             self.counter3.counter = data["counter3"]
         except Exception as ex:
             print(ex)
+        print("Loaded successful from {}.".format(f_name))
 
+    def load_json(self, f_name='saved_db_json'):
         ####### json
         try:
             object_as_dict = json.load(f_name)
@@ -91,7 +96,7 @@ class Player(object):
         except Exception as ex:
             print(ex)
 
-        print('Loaded successful.')
+        print('Loaded json successful from {}.'.format(f_name))
 
     def login(self, t_login='', t_password=''):
 
