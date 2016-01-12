@@ -1,6 +1,6 @@
 # coding=utf-8
 
-# import json
+import json
 import pickle
 
 
@@ -31,28 +31,34 @@ class Player(object):
             "plr_login": self.plr_login,
             "email": self.email,
             "password": self.password,
-            "money": self.money,
-            "session": self.session,
-            "counter1": self.counter1,
-            "counter2": self.counter2,
-            "counter3": self.counter3,
+            "money_wallet": self.money.wallet,
+            "money_deals": self.money.money_deals,
+            "session_info": self.session.session_info,
+            "counter1": self.counter1.counter,
+            "counter2": self.counter2.counter,
+            "counter3": self.counter3.counter,
         }
         return d
 
     def save(self, f_name='saved_db'):
+
+        ####### pickle
         try:
             with open(f_name, 'wb') as f:
                 pickle.dump(self.as_dict(), f)
         except Exception as ex:
             print(ex)
 
-        # try:
-        #     with open('{}_json'.format(f_name), 'wb') as f:
-        #         json.dump(self.as_dict(), f)
-        # except Exception as ex:
-        #     print(ex)
+        ####### json
+        try:
+            with open('{}_json'.format(f_name), 'wb') as f:
+                json.dump(self.as_dict(), f)
+        except Exception as ex:
+            print(ex)
 
     def load(self, f_name='saved_db'):
+
+        ####### pickle
         try:
             with open(f_name, 'rb') as f:
                 data = pickle.load(f)
@@ -60,28 +66,32 @@ class Player(object):
             self.plr_login = data["plr_login"]
             self.email = data["email"]
             self.password = data["password"]
-            self.money = data["money"]
-            self.session = data["session"]
-            self.counter1 = data["counter1"]
-            self.counter2 = data["counter2"]
-            self.counter3 = data["counter3"]
+            self.money.wallet = data["money_wallet"]
+            self.money.money_deals = data["money_deals"]
+            self.session.session_info = data["session_info"]
+            self.counter1.counter = data["counter1"]
+            self.counter2.counter = data["counter2"]
+            self.counter3.counter = data["counter3"]
         except Exception as ex:
             print(ex)
-        print('Loaded successful.')
-        # try:
-        #     object_as_dict = json.load(file_object)
-        #     self.plr_name = object_as_dict["plr_name"]
-        #     self.plr_login = object_as_dict["plr_login"]
-        #     self.email = object_as_dict["email"]
-        #     self.password = object_as_dict["password"]
-        #     self.money = object_as_dict["money"]
-        #     self.session = object_as_dict["session"]
-        #     self.counter1 = object_as_dict["counter1"]
-        #     self.counter2 = object_as_dict["counter2"]
-        #     self.counter3 = object_as_dict["counter3"]
-        # except Exception as ex:
-        #     print(ex)
 
+        ####### json
+        try:
+            object_as_dict = json.load(f_name)
+            self.plr_name = object_as_dict["plr_name"]
+            self.plr_login = object_as_dict["plr_login"]
+            self.email = object_as_dict["email"]
+            self.password = object_as_dict["password"]
+            self.money.wallet = object_as_dict["money_wallet"]
+            self.money.money_deals = object_as_dict["money_deals"]
+            self.session.session_info = object_as_dict["session_info"]
+            self.counter1.counter = object_as_dict["counter1"]
+            self.counter2.counter = object_as_dict["counter2"]
+            self.counter3.counter = object_as_dict["counter3"]
+        except Exception as ex:
+            print(ex)
+
+        print('Loaded successful.')
 
     def login(self, t_login='', t_password=''):
 
@@ -99,9 +109,9 @@ class Player(object):
         self.session.__enter__()
 
     def logout(self):
-        print("Bye-bye {}".format(self.plr_name))
         self.session.__exit__()
         self.save("{}'s logout_save".format(self.plr_login))
+        print("Bye-bye {}".format(self.plr_name))
 
 
 
@@ -139,4 +149,3 @@ class Admin(Moderator):
 
     def run(self):
         print("My speed is 50 kilometers per hour")
-

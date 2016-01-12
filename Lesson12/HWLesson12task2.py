@@ -1,16 +1,20 @@
 # coding=utf-8
 
 from time import sleep
-from os import path
+import os.path
+import sys
+
+path_to_module = os.path.split(__file__)[0]
+sys.path.append(path_to_module)
 
 def reload_player():
 
     while 1:
-        prev_value = path.getmtime(r'./gm/person.py')
+        prev_value = os.path.getmtime(r'./gm/person.py')
         sleep(1)
 
         from gm import person
-        current_value = path.getmtime(r'./gm/person.py')
+        current_value = os.path.getmtime(r'./gm/person.py')
 
         if current_value != prev_value:
             print("DEBUG: made changes in module person")
