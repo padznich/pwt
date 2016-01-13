@@ -7,10 +7,10 @@ import pickle
 import counters
 import money
 import session
+from lister import ListTree
 
 
-
-class Player(object):
+class Player(ListTree):
 
     def __init__(self, plr_name, plr_login, email, password):
         self.plr_name = plr_name
@@ -129,10 +129,6 @@ class Player(object):
     def stop(self):
         print("I've stopped!")
 
-
-    def __str__(self):
-        return "{}(name='{}')".format(self.__class__.__name__, self.plr_name)
-
 class Moderator(Player):
 
     def __init__(self, plr_name='Moderator', plr_login='log', email='email', password='pass'):
@@ -154,3 +150,9 @@ class Admin(Moderator):
 
     def run(self):
         print("My speed is 50 kilometers per hour")
+
+
+if __name__ == '__main__':
+
+    p = Admin()
+    print(p)

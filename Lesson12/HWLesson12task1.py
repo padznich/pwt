@@ -12,7 +12,7 @@ from gm import person
 
 p1 = person.Player('Bob', 'akhalai', 'bob@mail.ru', 'pass1')
 p2 = person.Moderator()
-p3 = person.Admin()
+p3 = person.Admin('Jim')
 
 
 
@@ -50,6 +50,8 @@ if __name__ == '__main__':
     p1.say()
     p2.say()
     p3.say()
+
+    print(p3)
 
     p1.login()
 
