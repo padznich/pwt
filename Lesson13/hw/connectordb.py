@@ -43,7 +43,7 @@ class Connect:
     '''
     Making DataBase with MySQL.
     '''
-    def __init__(self, host, user, password, db,):
+    def __init__(self, host, user, password, db):
 
         self.host = host
         self.user = user
@@ -129,9 +129,9 @@ class Connect:
 
 
 
-if __name__ == '__main__':
-    c = Connect('localhost', 'pad', 'padznich', 'pad_test')
-    c.change_value('player_counters', 'de', 1)
-    #c.add_to_db('player_counters', 'de', 6748132)
+    if __name__ == '__main__':
+        c = Connect('localhost', 'pad', 'padznich', 'pad_test')
+        c.change_value('player_counters', 'de', 1)
+        #c.add_to_db('player_counters', 'de', 6748132)
     c.show_db('player_counters')
 
