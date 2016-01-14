@@ -13,6 +13,7 @@ import lister
 class Player(lister.ListTree):
 
     def __init__(self, plr_name, plr_login, email, password):
+
         self.plr_name = plr_name
         self.plr_login = plr_login
         self.email = email
@@ -20,9 +21,9 @@ class Player(lister.ListTree):
 
         self.money = money.Money(self.plr_name)
         self.session = session.Session(self.plr_name)
-        self.counter1 = counters.Counters('counter1')
-        self.counter2 = counters.Counters('counter2')
-        self.counter3 = counters.Counters('counter3')
+        self.counter1 = counters.Counters(name='counter1')
+        self.counter2 = counters.Counters(name='counter2')
+        self.counter3 = counters.Counters(name='counter3')
 
     def as_dict(self):
         '''
@@ -169,4 +170,5 @@ class Admin(Moderator):
 if __name__ == '__main__':
 
     p = Admin()
+    print(p.as_dict())
     print(p)
