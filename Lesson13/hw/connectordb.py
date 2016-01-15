@@ -133,5 +133,5 @@ class Connect:
         c = Connect('localhost', 'pad', 'padznich', 'pad_test')
         c.change_value('player_counters', 'de', 1)
         #c.add_to_db('player_counters', 'de', 6748132)
-    c.show_db('player_counters')
+        c.show_db('player_counters')
 
