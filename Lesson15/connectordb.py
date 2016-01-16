@@ -31,5 +31,5 @@ class Connect:
 
         return cursor
 
-db_connect = Connect('localhost', 'root', 'root', 'mydb')
+db_connect = Connect('localhost', 'pad', 'padznich', 'hw14')
 

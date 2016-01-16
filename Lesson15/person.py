@@ -26,7 +26,7 @@ class Player(lister.ListTree):
         self.counter2 = counters.Counters
         self.counter3 = counters.Counters
 
-        self.db_connect = connectordb.Connect
+        self.db_connect = connectordb.db_connect
 
 
     def as_dict(self):
