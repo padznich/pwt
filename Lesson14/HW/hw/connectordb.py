@@ -184,8 +184,8 @@ class Connect:
                             " SET `value`=%(value)s, `updated`=now()" \
                             " WHERE `currency`=%(currency)s AND `players_id`=%(players_id)s;"
                 sql_data = {"value": args[0],
-                            "currency": args[1],
-                            "players_id": args[2]}
+                                "currency": args[1],
+                                "players_id": args[2]}
 
                 cursor.execute(sql_query, sql_data)
         finally:
@@ -220,29 +220,49 @@ class Connect:
 
     def load_player_db(self, *args):
         '''
-        Returns players arguments.
+        Returns player's arguments.
         '''
-        self.connection = MySQLdb.connect(self.host,
-                                          self.user,
-                                          self.password,
-                                          self.db)
-        with self.connection:
-
-            cursor = self.connection.cursor()
-
-            sql_query = "SELECT * FROM players WHERE id=%(id)s"
-            sql_data = {"id": args[0]}
-            cursor.execute(sql_query, sql_data)
+        try:
+            self.connection = MySQLdb.connect(self.host,
+                                              self.user,
+                                              self.password,
+                                              self.db)
+            with self.connection:
+                cursor = self.connection.cursor()
+                sql_query = "SELECT * FROM players WHERE id=%(id)s"
+                sql_data = {"id": args[0]}
+                cursor.execute(sql_query, sql_data)
             for w in cursor:
                 self.id = w[0]
                 self.plr_name = w[1]
                 self.plr_login = w[2]
                 self.email = w[3]
                 self.password = w[4]
-
+        finally:
+            self.connection.close()
         return self.id, self.plr_name, self.plr_login, self.email, self.password
 
+    def load_money_db(self, *args):
+        '''
+        Returns players arguments.
+        '''
+        try:
+            self.connection = MySQLdb.connect(self.host,
+                                              self.user,
+                                              self.password,
+                                              self.db)
+            with self.connection:
+                cursor = self.connection.cursor()
+                sql_query = "SELECT * FROM money WHERE players_id=%(id)s"
+                sql_data = {"id": args[0]}
+                cursor.execute(sql_query, sql_data)
+                l_wallet = {}
 
+            for w in cursor:
+                l_wallet[w[1]] = w[2]
+        finally:
+            self.connection.close()
+        return l_wallet
 
 
 
@@ -264,4 +284,5 @@ if __name__ == '__main__':
     # c.update_counters_table(2876, 'steps', 1)
     # c.show_table('counters')
 
-    c.load_player(1)
+    c.load_player_db(1)
+    c.load_money_db(1)

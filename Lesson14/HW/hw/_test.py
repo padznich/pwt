@@ -8,4 +8,6 @@ p.db_connect = p.db_connect('localhost', 'pad', 'padznich', 'hw14')
 
 p.load_player(1)
 
-print(p.id)
+print(p.id, p.email, p.money)
+
+

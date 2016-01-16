@@ -20,8 +20,8 @@ class Player(lister.ListTree):
         self.email = email
         self.password = password
 
-        self.money = money.Money(self.plr_name)
-        self.session = session.Session(self.plr_name)
+        self.money = money.Money(self.id)
+        self.session = session.Session(self.id)
         self.counter1 = counters.Counters
         self.counter2 = counters.Counters
         self.counter3 = counters.Counters
@@ -148,6 +148,8 @@ class Player(lister.ListTree):
         self.plr_login = data[2]
         self.email = data[3]
         self.password = data[4]
+
+        self.money.wallet = self.db_connect.load_money_db(self.id)
 
 
     def say(self):
