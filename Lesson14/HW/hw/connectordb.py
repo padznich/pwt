@@ -232,12 +232,12 @@ class Connect:
                 sql_query = "SELECT * FROM players WHERE id=%(id)s"
                 sql_data = {"id": args[0]}
                 cursor.execute(sql_query, sql_data)
-            for w in cursor:
-                self.id = w[0]
-                self.plr_name = w[1]
-                self.plr_login = w[2]
-                self.email = w[3]
-                self.password = w[4]
+                for w in cursor:
+                    self.id = w[0]
+                    self.plr_name = w[1]
+                    self.plr_login = w[2]
+                    self.email = w[3]
+                    self.password = w[4]
         finally:
             self.connection.close()
         return self.id, self.plr_name, self.plr_login, self.email, self.password
@@ -257,9 +257,8 @@ class Connect:
                 sql_data = {"id": args[0]}
                 cursor.execute(sql_query, sql_data)
                 l_wallet = {}
-
-            for w in cursor:
-                l_wallet[w[1]] = w[2]
+                for w in cursor:
+                    l_wallet[w[1]] = w[2]
         finally:
             self.connection.close()
         return l_wallet

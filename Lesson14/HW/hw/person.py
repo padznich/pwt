@@ -149,7 +149,7 @@ class Player(lister.ListTree):
         self.email = data[3]
         self.password = data[4]
 
-        self.money.wallet = self.db_connect.load_money_db(self.id)
+        self.money.wallet = self.db_connect.load_money_db(id)
 
 
     def say(self):
