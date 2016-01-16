@@ -12,8 +12,9 @@ import connectordb
 
 class Player(lister.ListTree):
 
-    def __init__(self, plr_name, plr_login, email, password):
+    def __init__(self, id, plr_name, plr_login, email, password):
 
+        self.id = id
         self.plr_name = plr_name
         self.plr_login = plr_login
         self.email = email
@@ -21,9 +22,12 @@ class Player(lister.ListTree):
 
         self.money = money.Money(self.plr_name)
         self.session = session.Session(self.plr_name)
-        self.counter1 = counters.Counters(name='counter1')
-        self.counter2 = counters.Counters(name='counter2')
-        self.counter3 = counters.Counters(name='counter3')
+        self.counter1 = counters.Counters
+        self.counter2 = counters.Counters
+        self.counter3 = counters.Counters
+
+        self.db_connect = connectordb.Connect
+
 
     def as_dict(self):
         '''
@@ -134,6 +138,17 @@ class Player(lister.ListTree):
         print("Bye-bye {}".format(self.plr_name))
 
 
+    def load_player(self, id):
+        '''
+        Returns players arguments.
+        '''
+        data = self.db_connect.load_player_db(id)
+        self.id = data[0]
+        self.plr_name = data[1]
+        self.plr_login = data[2]
+        self.email = data[3]
+        self.password = data[4]
+
 
     def say(self):
         print("I'm a simple Player.")
@@ -147,7 +162,7 @@ class Player(lister.ListTree):
 class Moderator(Player):
 
     def __init__(self, plr_name='Moderator', plr_login='log', email='email', password='pass'):
-        Player.__init__(self, plr_name, plr_login, email, password)
+        Player.__init__(self, id, plr_name, plr_login, email, password)
 
     def say(self):
         print("I'm a moderator.")
@@ -158,7 +173,7 @@ class Moderator(Player):
 class Admin(Moderator):
 
     def __init__(self, plr_name='Admin', plr_login='log', email='email', password='pass'):
-        Player.__init__(self, plr_name, plr_login, email, password)
+        Player.__init__(self, id, plr_name, plr_login, email, password)
 
     def say(self):
         print("I'm an administrator.")
@@ -168,7 +183,11 @@ class Admin(Moderator):
 
 
 if __name__ == '__main__':
-
     p = Admin()
-    print(p.as_dict())
-    print(p)
+
+    p.db_connect = p.db_connect('localhost', 'pad', 'padznich', 'hw14')
+    print(p.db_connect.host)
+
+    p.counter1 = p.counter1('steps')
+    print(p.counter1.name)
+    p.load_player(1)

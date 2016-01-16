@@ -48,13 +48,44 @@ class Connect:
             print('/' * 110)
 
 
+    def insert_into_players_table (self, *args):
+        '''
+        Enter:
+         id=int
+         plr_name='str'
+         plr_login='str'
+         email='str'
+         password='str'
+        '''
+        try:
+            self.connection = MySQLdb.connect(self.host,
+                                              self.user,
+                                              self.password,
+                                              self.db)
+            with self.connection:
+                cursor = self.connection.cursor()
+
+                sql_query = "INSERT INTO `players` (`id`, `plr_name`, `plr_login`, `email`, `password`," \
+                            " `created`, `updated`)" \
+                            " VALUES (%(id)s, %(plr_name)s, %(plr_login)s, %(email)s, %(password)s," \
+                            " now(), now());"
+                sql_data = {"id": args[0],
+                            "plr_name": args[1],
+                            "plr_login": args[2],
+                            "email": args[3],
+                            "password": args[4]}
+
+                cursor.execute(sql_query, sql_data)
+        finally:
+            self.connection.close()
+
     def insert_into_money_table (self, *args):
         '''
         Enter:
          id=int
          currency='str'
          value=int
-         player_id=int
+         players_id=int
         '''
         try:
             self.connection = MySQLdb.connect(self.host,
@@ -65,11 +96,11 @@ class Connect:
                 cursor = self.connection.cursor()
 
                 sql_query = "INSERT INTO `money` (`id`, `currency`, `value`, `created`, `updated`, `players_id`)" \
-                            " VALUES (%(arg0)s, %(arg1)s, %(arg2)s, now(), now(), %(arg3)s);"
-                sql_data = {"arg0": args[0],
-                            "arg1": args[1],
-                            "arg2": args[2],
-                            "arg3": args[3]}
+                            " VALUES (%(id)s, %(currency)s, %(value)s, now(), now(), %(players_id)s);"
+                sql_data = {"id": args[0],
+                            "currency": args[1],
+                            "value": args[2],
+                            "players_id": args[3]}
 
                 cursor.execute(sql_query, sql_data)
         finally:
@@ -81,7 +112,7 @@ class Connect:
          id=int
          counter_name='str'
          value=int
-         player_id=int
+         players_id=int
         '''
         try:
             self.connection = MySQLdb.connect(self.host,
@@ -92,11 +123,11 @@ class Connect:
                 cursor = self.connection.cursor()
 
                 sql_query = "INSERT INTO `counters` (`id`, `counter_name`, `value`, `created`, `updated`, `players_id`)" \
-                            " VALUES (%(arg0)s, %(arg1)s, %(arg2)s, now(), now(), %(arg3)s);"
-                sql_data = {"arg0": args[0],
-                            "arg1": args[1],
-                            "arg2": args[2],
-                            "arg3": args[3]}
+                            " VALUES (%(id)s, %(counter_name)s, %(value)s, now(), now(), %(players_id)s);"
+                sql_data = {"id": args[0],
+                            "counter_name": args[1],
+                            "value": args[2],
+                            "players_id": args[3]}
 
                 cursor.execute(sql_query, sql_data)
         finally:
@@ -109,7 +140,7 @@ class Connect:
          start_time=DATETIME
          finish_time=DATETIME
          total_time=TIME
-         player_id=int
+         players_id=int
         '''
         try:
             self.connection = MySQLdb.connect(self.host,
@@ -121,12 +152,13 @@ class Connect:
 
                 sql_query = "INSERT INTO `session` (`id`, `start_time`, `finish_time`, `total_time`," \
                             " `created`, `updated`, `players_id`)" \
-                            " VALUES (%(arg0)s, %(arg1)s, %(arg2)s, %(arg3)s, now(), now(), %(arg4)s);"
-                sql_data = {"arg0": args[0],
-                            "arg1": args[1],
-                            "arg2": args[2],
-                            "arg3": args[3],
-                            "arg4": args[4]}
+                            " VALUES (%(id)s, %(start_time)s, %(finish_time)s, %(total_time)s, now(), now()," \
+                            " %(players_id)s);"
+                sql_data = {"id": args[0],
+                            "start_time": args[1],
+                            "finish_time": args[2],
+                            "total_time": args[3],
+                            "players_id": args[4]}
 
                 cursor.execute(sql_query, sql_data)
         finally:
@@ -138,7 +170,7 @@ class Connect:
         Enter
          value=int
          currency='str'
-         player_id=int
+         players_id=int
         '''
         try:
             self.connection = MySQLdb.connect(self.host,
@@ -149,11 +181,11 @@ class Connect:
                 cursor = self.connection.cursor()
 
                 sql_query = "UPDATE `money`" \
-                            " SET `value`=%(arg0)s, `updated`=now()" \
-                            " WHERE `currency`=%(arg1)s AND `id`=%(arg2)s;"
-                sql_data = {"arg0": args[0],
-                            "arg1": args[1],
-                            "arg2": args[2]}
+                            " SET `value`=%(value)s, `updated`=now()" \
+                            " WHERE `currency`=%(currency)s AND `players_id`=%(players_id)s;"
+                sql_data = {"value": args[0],
+                            "currency": args[1],
+                            "players_id": args[2]}
 
                 cursor.execute(sql_query, sql_data)
         finally:
@@ -164,7 +196,7 @@ class Connect:
         Enter
          value=int
          counter_name='str'
-         player_id=int
+         players_id=int
         '''
         try:
             self.connection = MySQLdb.connect(self.host,
@@ -175,20 +207,48 @@ class Connect:
                 cursor = self.connection.cursor()
 
                 sql_query = "UPDATE `counters`" \
-                            " SET `value`=%(arg0)s, `updated`=now()" \
-                            " WHERE `counter_name`=%(arg1)s AND `id`=%(arg2)s;"
-                sql_data = {"arg0": args[0],
-                            "arg1": args[1],
-                            "arg2": args[2]}
+                            " SET `value`=%(value)s, `updated`=now()" \
+                            " WHERE `counter_name`=%(counter_name)s AND `players_id`=%(players_id)s;"
+                sql_data = {"value": args[0],
+                            "counter_name": args[1],
+                            "players_id": args[2]}
 
                 cursor.execute(sql_query, sql_data)
         finally:
             self.connection.close()
 
 
+    def load_player_db(self, *args):
+        '''
+        Returns players arguments.
+        '''
+        self.connection = MySQLdb.connect(self.host,
+                                          self.user,
+                                          self.password,
+                                          self.db)
+        with self.connection:
+
+            cursor = self.connection.cursor()
+
+            sql_query = "SELECT * FROM players WHERE id=%(id)s"
+            sql_data = {"id": args[0]}
+            cursor.execute(sql_query, sql_data)
+            for w in cursor:
+                self.id = w[0]
+                self.plr_name = w[1]
+                self.plr_login = w[2]
+                self.email = w[3]
+                self.password = w[4]
+
+        return self.id, self.plr_name, self.plr_login, self.email, self.password
+
+
+
+
+
 if __name__ == '__main__':
     c = Connect('localhost', 'pad', 'padznich', 'hw14')
-    # c.insert_into_money_table(3, 'GBH', 57, 1)
+    #c.insert_into_money_table(1, 'GBH', 57, 1)
     # c.insert_into_counters_table(2, 'words', 389, 1)
 
     # a = datetime.datetime.now()
@@ -204,4 +264,4 @@ if __name__ == '__main__':
     # c.update_counters_table(2876, 'steps', 1)
     # c.show_table('counters')
 
-    c.show_table('session')
+    c.load_player(1)
