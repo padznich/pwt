@@ -265,6 +265,7 @@ class Connect:
 
 
 
+
 if __name__ == '__main__':
     c = Connect('localhost', 'pad', 'padznich', 'hw14')
     #c.insert_into_money_table(1, 'GBH', 57, 1)

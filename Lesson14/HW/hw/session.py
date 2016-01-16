@@ -8,11 +8,11 @@ class Session(object):
         self.session_info = [] # [[start, finish, total], ]
         self.name = name
 
-    def __enter__(self):
+    def _start(self):
         self.start = datetime.datetime.now()
         print("Session started.")
 
-    def __exit__(self):
+    def _finish(self):
         self.finish = datetime.datetime.now()
         self.total = (self.finish - self.start)
         self.session_info.append("Session started at: {}  ||  "

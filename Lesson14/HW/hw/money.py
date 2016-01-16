@@ -47,6 +47,9 @@ class Money(object):
             print(er)
             self.db_connect.update_money_table(args[0], args[1], args[2], args[3])
 
+
+
+
 if __name__ == '__main__':
     m = Money(1)
     m.db_connect = m.db_connect('localhost', 'pad', 'padznich', 'hw14')

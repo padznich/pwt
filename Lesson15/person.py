@@ -138,6 +138,8 @@ class Player(lister.ListTree):
         print("Bye-bye {}".format(self.plr_name))
 
 
+
+
     def load_player(self, id):
         '''
         Returns players arguments.
@@ -149,7 +151,9 @@ class Player(lister.ListTree):
         self.email = data[3]
         self.password = data[4]
 
-        self.money.wallet = self.db_connect.load_money_db(id)
+        #self.money.wallet = self.db_connect.load_money_db(id)
+
+
 
 
     def say(self):
@@ -160,6 +164,7 @@ class Player(lister.ListTree):
 
     def stop(self):
         print("I've stopped!")
+
 
 class Moderator(Player):
 
@@ -190,7 +195,7 @@ class Admin(Moderator):
 if __name__ == '__main__':
     p = Admin()
 
-    p.db_connect = p.db_connect('localhost', 'pad', 'padznich', 'hw14')
+    p.db_connect = p.db_connect('localhost', 'root', 'root', 'mydb')
     print(p.db_connect.host)
 
     p.counter1 = p.counter1('steps')
