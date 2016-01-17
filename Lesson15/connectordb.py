@@ -22,7 +22,8 @@ class Connect:
         self.connection = MySQLdb.connect(self.host,
                                           self.user,
                                           self.password,
-                                          self.db, autocommit=True)
+                                          self.db,
+                                          autocommit=True)
 
     def run_query(self, sql_query, sql_data):
 

@@ -15,18 +15,18 @@ class Money(object):
     def show_wallet(self):
         print("Player id : {}. Wallet:".format(self.players_id))
         for k, v in self.wallet.items():
-            print('--{} : {}'.format(k, self.wallet[k]))
+            print('-- {} : {}'.format(k, self.wallet[k]))
 
-    def give(self, cur, val):
-        print("{} balance decreased by {} {}.".format(self.players_id, val, cur))
+    def rob(self, cur, value):
+        print("Player id: {}. Balance decreased by {} {}.".format(self.players_id, value, cur))
         self.wallet.setdefault(cur, 0)
-        self.wallet[cur] -= val
+        self.wallet[cur] -= value
         self.money_deals += 1
 
-    def take(self, cur, val):
-        print("{} balance increased by {} {}.".format(self.players_id, val, cur))
+    def add(self, cur, value):
+        print("Player id: {}. Balance increased by {} {}.".format(self.players_id, value, cur))
         self.wallet.setdefault(cur, 0)
-        self.wallet[cur] += val
+        self.wallet[cur] += value
         self.money_deals += 1
 
 
@@ -47,7 +47,7 @@ class Money(object):
         '''
         try:
             sql_query = "INSERT INTO money (id, currency, value, created, updated, players_id)" \
-                        " VALUES (%(id)s, %(currency)s, %(value)s, now(), now(), %(players_id)s);"
+                        " valueS (%(id)s, %(currency)s, %(value)s, now(), now(), %(players_id)s);"
             sql_data = {"id": id,
                         "currency": currency,
                         "value": value,

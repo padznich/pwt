@@ -2,7 +2,7 @@
 
 import json
 import pickle
-
+import argparse
 
 import counters
 import money
@@ -22,11 +22,11 @@ class Player(lister.ListTree):
 
         self.money = money.Money(self.id)
         self.session = session.Session(self.id)
-        self.counter1 = counters.Counters
-        self.counter2 = counters.Counters
-        self.counter3 = counters.Counters
+        self.counter = counters.Counters(self.id)
 
         self.db_connect = connectordb.db_connect
+
+        self.session_info = []
 
 
     def as_dict(self):
@@ -41,10 +41,8 @@ class Player(lister.ListTree):
             "password": self.password,
             "money_wallet": self.money.wallet,
             "money_deals": self.money.money_deals,
-            "session_info": self.session.session_info,
-            "counter1": self.counter1.counter,
-            "counter2": self.counter2.counter,
-            "counter3": self.counter3.counter,
+            "session_info": self.session_info,
+            "counter": self.counter.counter
         }
         return d
 
@@ -83,10 +81,8 @@ class Player(lister.ListTree):
             self.password = data["password"]
             self.money.wallet = data["money_wallet"]
             self.money.money_deals = data["money_deals"]
-            self.session.session_info = data["session_info"]
-            self.counter1.counter = data["counter1"]
-            self.counter2.counter = data["counter2"]
-            self.counter3.counter = data["counter3"]
+            self.session_info = data["session_info"]
+            self.counter.counter = data["counter"]
         except Exception as ex:
             print(ex)
         print("Loaded successful from {}.".format(f_name))
@@ -103,10 +99,8 @@ class Player(lister.ListTree):
             self.password = object_as_dict["password"]
             self.money.wallet = object_as_dict["money_wallet"]
             self.money.money_deals = object_as_dict["money_deals"]
-            self.session.session_info = object_as_dict["session_info"]
-            self.counter1.counter = object_as_dict["counter1"]
-            self.counter2.counter = object_as_dict["counter2"]
-            self.counter3.counter = object_as_dict["counter3"]
+            self.session_info = object_as_dict["session_info"]
+            self.counter.counter = object_as_dict["counter"]
         except Exception as ex:
             print(ex)
 
@@ -116,15 +110,8 @@ class Player(lister.ListTree):
         '''
         Login function as a default carry out pickle.
         '''
-        if t_login != self.plr_login:
-            if self.plr_login != raw_input('Enter login: '):
-                print("Wrong login")
-                return self.login()
-
-        if self.password != raw_input('Enter password: '):
-            print("Wrong password")
-            return self.login(self.plr_login)
-
+        if t_login and t_password:
+            print('login and password confirmed.')
         print("Welcome {}".format(self.plr_name))
         self.load()
         self.session._start()
@@ -134,9 +121,10 @@ class Player(lister.ListTree):
         Logout function as a default carry out pickle.
         '''
         self.session._finish()
+        self.session_info.append(self.session.currrent_session_info)
+
         self.save("{}'s logout_save".format(self.plr_login))
         print("Bye-bye {}".format(self.plr_name))
-
 
 
 
@@ -198,6 +186,6 @@ if __name__ == '__main__':
     p.db_connect = p.db_connect('localhost', 'root', 'root', 'mydb')
     print(p.db_connect.host)
 
-    p.counter1 = p.counter1('steps')
-    print(p.counter1.name)
+    p.counter = p.counter('steps')
+    print(p.counter.name)
     p.load_player(1)

@@ -7,22 +7,24 @@ class Counters(object):
     def __init__(self, players_id):
 
         self.players_id = players_id
-        self.counter = {}   # {counter_name : value, }
+        self.counters_dict = {}   # {counter_name : value, }
 
         self.db = connectordb.db_connect
 
-    def new_counter(self, name):
-        self.counter[name] = 0
+    def show_score(self):
+        print("Player id : {}. counters_dict:".format(self.players_id))
+        for k in self.counters_dict.keys():
+            print("For {} value is: {}".format(k, self.counters_dict[k]))
+
+    def rob(self, name, value):
+        print("Player id: {}. Counter {} decreased with {}.".format(self.players_id, nmae, value))
+        self.counters_dict.setdefault(name, 0)
+        self.counters_dict[name] -= value
 
     def add(self, name, value):
-        self.counter[name] += value
-
-    def rob(self, name,value):
-        self.counter[name] -= value
-
-    def show_score(self):
-        for k in self.counter.keys():
-            print("For {} value is: {}".format(k, self.counter[k]))
+        print("Player id: {}. Counter {} increased with {}.".format(self.players_id, name, value))
+        self.counters_dict.setdefault(name, 0)
+        self.counters_dict[name] += value
 
 
 
@@ -34,7 +36,7 @@ class Counters(object):
         sql_data = {"players_id": self.players_id}
         data = self.db.run_query(sql_query, sql_data)
         for w in data:
-            self.counter[w[1]] = w[2]
+            self.counters_dict[w[1]] = w[2]
 
     def save_to_db(self, id, counter_name, value):
         '''

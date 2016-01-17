@@ -9,26 +9,28 @@ class Session(object):
     def __init__(self, players_id):
 
         self.players_id = players_id
-        self.session_info = [] # [[start, finish, total], ]
+        self.currrent_session_info = [] # [start, finish, total]
 
         self.db = connectordb.db_connect
 
     def _start(self):
         self.start = datetime.datetime.now()
+        self.currrent_session_info.append(self.start)
         print("Session started.")
 
     def _finish(self):
         self.finish = datetime.datetime.now()
-        self.total = (self.finish - self.start)
-        self.session_info.append("Session started at: {}  ||  "
-                                 "Session finished at: {}  ||  "
-                                 "Session duration is: {}"
-                                 .format(str(self.start), str(self.finish), str(self.total)))
+        self.currrent_session_info.append(self.finish)
+
+        self.total = self.finish - self.start
+        self.currrent_session_info.append(self.total)
         print("Session finished")
 
     def show_info(self):
-        for w in self.session_info:
-            print("For player_id {} session {}".format(self.players_id, w))
+        print("For player_id {}.".format(self.players_id))
+        print("Session started at {}.".format(self.currrent_session_info[0]))
+        print("Session finished at {}.".format(self.currrent_session_info[1]))
+        print("Total session time is {}".format(self.currrent_session_info[2]))
 
 
 
@@ -40,7 +42,7 @@ class Session(object):
         sql_data = {"players_id": self.players_id}
         data = self.db.run_query(sql_query, sql_data)
         for w in data:
-            self.session_info.append([w[1], w[2], w[3]])
+            self.currrent_session_info.append([w[1], w[2], w[3]])
 
     def save_to_db(self, id, start_time, finish_time, total_time):
         '''
@@ -66,10 +68,16 @@ class Session(object):
         self.db.run_query(sql_query, sql_data)
 
 
+
+
 if __name__ == '__main__':
 
     s = Session(1)
+    s._start()
+    s._finish()
+
     s.show_info()
+
     s.load_from_db()
     s.show_info()
 
