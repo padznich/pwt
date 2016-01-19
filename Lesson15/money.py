@@ -6,6 +6,7 @@ class Money(object):
 
     def __init__(self, players_id):
 
+        self.ids = {} # {currency : id}
         self.players_id = players_id
         self.wallet = {} # {currency : amount}
         self.money_deals = 0
@@ -33,38 +34,46 @@ class Money(object):
 
     def load_from_db(self):
         '''
-        Returns wallet.
+        Reestablish wallet.
         '''
         sql_query = "SELECT * FROM money WHERE players_id=%(players_id)s"
         sql_data = {"players_id": self.players_id}
         data = self.db.run_query(sql_query, sql_data)
         for w in data:
             self.wallet[w[1]] = w[2]
+            self.ids[w[1]] = w[0]
 
-    def save_to_db(self, id, currency, value):
+    def save_to_db(self):
         '''
-        All currencies must have unique id.
+        At first update all values. If appears a new currency - it causes an exception.
+        And insert a new currency: value.
         '''
-        try:
-            sql_query = "INSERT INTO money (id, currency, value, created, updated, players_id)" \
-                        " valueS (%(id)s, %(currency)s, %(value)s, now(), now(), %(players_id)s);"
-            sql_data = {"id": id,
-                        "currency": currency,
-                        "value": value,
-                        "players_id": self.players_id}
-            self.db.run_query(sql_query, sql_data)
+        for currency, value in self.wallet:
 
-        except Exception as er:
-            print(er)
-            sql_query = "UPDATE `money`" \
-                        " SET `value`=%(value)s, `updated`=now()" \
-                        " WHERE `currency`=%(currency)s AND `players_id`=%(players_id)s;"
-            sql_data = {"value": value,
-                        "currency": currency,
-                        "players_id": self.players_id}
-            self.db.run_query(sql_query, sql_data)
+            try:
+                sql_query = "UPDATE money" \
+                            " SET value=%(value)s, updated=now()" \
+                            " WHERE currency=%(currency)s AND players_id=%(players_id)s;"
+                sql_data = {"value": value,
+                            "currency": currency,
+                            "players_id": self.players_id}
+                self.db.run_query(sql_query, sql_data)
+
+            except Exception as er:
+                print(er)
+                for currency, value in self.wallet:
+                    sql_query = "INSERT INTO money (id, currency, value, created, updated, players_id)" \
+                                " valueS (%(id)s, %(currency)s, %(value)s, now(), now(), %(players_id)s);"
+                    sql_data = {"id": self.ids[currency],
+                                "currency": currency,
+                                "value": value,
+                                "players_id": self.players_id}
+                    self.db.run_query(sql_query, sql_data)
 
     def delete_from_db(self, id):
+        '''
+        Delete from money by id.
+        '''
         sql_query = "DELETE FROM `money`" \
                     " WHERE  id=%(id)s;"
         sql_data = {"id": id}
@@ -78,9 +87,6 @@ if __name__ == '__main__':
     m.load_from_db()
     m.show_wallet()
 
-    m.save_to_db(1, 'GBH', 5555)
-    m.save_to_db(2, 'RUB', 4)
-    m.save_to_db(3, 'FRANK', 872)
     #m.delete_from_db(3)
 
 
