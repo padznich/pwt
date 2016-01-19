@@ -2,13 +2,13 @@
 
 import json
 import pickle
-import argparse
 
+import connectordb
 import counters
+import lister
 import money
 import session
-import lister
-import connectordb
+
 
 class Player(lister.ListTree):
 
@@ -198,7 +198,7 @@ class Player(lister.ListTree):
 
 class Moderator(Player):
 
-    def __init__(self, plr_name='Moderator', plr_login='log', email='email', password='pass'):
+    def __init__(self, id=0, plr_name='Moderator', plr_login='log', email='email', password='pass'):
         Player.__init__(self, id, plr_name, plr_login, email, password)
 
     def say(self):
@@ -209,7 +209,7 @@ class Moderator(Player):
 
 class Admin(Moderator):
 
-    def __init__(self, plr_name='Admin', plr_login='log', email='email', password='pass'):
+    def __init__(self, id =0, plr_name='Admin', plr_login='log', email='email', password='pass'):
         Player.__init__(self, id, plr_name, plr_login, email, password)
 
     def say(self):
