@@ -17,7 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 
 from startpage.views import test1
-from home.views import show_db, show_db_id, p_info, p_list, test2, hw1
+from home.views import show_db, show_db_id, p_info, p_list, test2, hw1, hw2
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -30,4 +30,5 @@ urlpatterns = [
     url(r'^home/showdb/([0-9]+)/$', show_db_id),
     url(r'^home/players_info/$', test2),
     url(r'^home/hw1/$', hw1),
+    url(r'^home/hw2/([0-9]+)/$', hw2),
 ]

@@ -41,11 +41,12 @@ def test2(request):
 def hw1(request): # WRONG
     amount_BYN = Money.objects.filter(currency_id='BYN').aggregate(Sum('amount'))
     amount_dead_crystals = Money.objects.filter(currency_id='dead_crystals').aggregate(Sum('amount'))
-    d = {}
-    d['BYN'] = amount_BYN
-    d['dead_crystals'] = amount_dead_crystals
-    jd = json.dump(d)
 
+    jd = json.dump('test', {'BYN': amount_BYN})
+    print('---------------', jd)
     html = "{}".format(jd)
     return HttpResponse(jd)
 
+def hw2(request, id):
+    money_by_id_rows = Money.objects.filter(player_id=id)
+    return HttpResponse(money_by_id_rows)
