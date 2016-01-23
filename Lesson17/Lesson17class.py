@@ -1,6 +1,7 @@
-# coding-utf-8
-'''
+# coding=utf-8
 
+
+"""
 django-admin startrpoject mvc
 django-admin startapp home
 django-admin startapp startpage
@@ -19,14 +20,12 @@ python manage.py migrate                           -- миграции
 
     admin.site.register(Player)
 
-
 В models.py
             class Meta:
                     managed = False
                     verbose_name_plural = 'Money'
                     db_table = 'money'
-
-
+                    db_table = 'money'
 
 
 работа в python manage.py shell
@@ -40,7 +39,4 @@ https://docs.djangoproject.com/en/1.8/topics/db/queries/#limiting-querysets
 >>> from django.db.models import Sum, Avg
 >>> Money.objects.filter(currency_id='BYN').aggregate(Sum('amount'))
 >>> Money.objects.filter(currency_id='BYN').aggregate(Avg('amount'))
-
-
-
-'''
+"""
