@@ -1,0 +1,15 @@
+<html>
+        <body>
+        <table border="1">
+            {% for player in player_list %}
+                <tr>
+                    <td>Name: {{ player.name }}</td>
+                    <td>Email: {{ player.email}}</td>
+                    <td>Created: {{ player.created|date:"SHORT_DATE_FORMAT" }}</td>
+                    <td>Updated: {{ player.updated|date:"SHORT_DATE_FORMAT" }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <!-- https://docs.djangoproject.com/en/1.8/ref/templates/builtins/#for -->
+    </body>
+</html>
