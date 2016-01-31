@@ -42,10 +42,11 @@ def hw1(request): # WRONG
     amount_BYN = Money.objects.filter(currency_id='BYN').aggregate(Sum('amount'))
     amount_dead_crystals = Money.objects.filter(currency_id='dead_crystals').aggregate(Sum('amount'))
 
-    jd = json.dump('test', {'BYN': amount_BYN})
-    print('---------------', jd)
-    html = "{}".format(jd)
-    return HttpResponse(jd)
+    #import simplejson as json
+    jsonDict = {'BYN': amount_BYN["amount__sum"],
+                'dead_crystals': amount_dead_crystals["amount__sum"]
+    }
+    return HttpResponse(json.dumps(jsonDict))
 
 def hw2(request, id):
     money_by_id_rows = Money.objects.filter(player_id=id)
